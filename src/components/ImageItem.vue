@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref } from 'vue';
 import preloader from './../assets/preloader-dark.gif'
 
 const imageURL = ref(preloader); 

@@ -27,8 +27,6 @@ const getImagesFromPixabayAPI = () => {
       params: { key: API_KEY, q: searchTerm.value.toLowerCase(), page: currentPage.value, per_page: itemsPerPage }
     })
     .then(({ data }) => {
-      // console.log(data)
-
       totalImages.value = data.total;
       images.value      = data.hits;
       pages.value       = Math.ceil(data.totalHits / itemsPerPage);
