@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import SearchForm from './components/SearchForm.vue';
 import ImageList from './components/ImageList.vue';
@@ -9,11 +9,9 @@ const totalImages   = ref(0);
 const images        = ref([]);
 const searchTerm    = ref("");
 const isLoading     = ref(false);
-
 const pages         = ref(10);
 const currentPage   = ref(1);
 const itemsPerPage  = 40;
-
 const API_URL       = "https://pixabay.com/api/";
 const API_KEY       = "24867302-6a5bcc62ddb787bd1b750a716";
 
@@ -26,10 +24,10 @@ const getImagesFromPixabayAPI = () => {
     .get(API_URL, {
       params: { key: API_KEY, q: searchTerm.value.toLowerCase(), page: currentPage.value, per_page: itemsPerPage }
     })
-    .then(({ data }) => {
-      totalImages.value = data.total;
-      images.value      = data.hits;
-      pages.value       = Math.ceil(data.totalHits / itemsPerPage);
+    .then(({ data: { total, totalHits, hits } }) => {
+      totalImages.value = total;
+      images.value      = hits;
+      pages.value       = Math.ceil(totalHits / itemsPerPage);
     })
     .catch(error => {
       console.log(error);
