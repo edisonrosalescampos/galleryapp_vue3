@@ -1,12 +1,13 @@
 body {
     background-color: var(--bs-black);
     color: var(--bs-white);
+    user-select: none;
 }
 
 .gallery {
     display: flex;
     flex-direction: column;
-    row-gap: 1.25rem;
+    row-gap: 1rem;
 }
 
 .gallery .title {
@@ -16,7 +17,7 @@ body {
 
 .gallery .search-container {
     position: relative;
-    margin-bottom: 0;
+    margin-bottom: .5rem;
 }
 
 .gallery .search-container .form-control {
@@ -91,18 +92,59 @@ body {
     display: grid;
     grid-template-columns: repeat(2, calc(50% - .375rem));
     grid-gap: .75rem;
+    margin-top: .5rem;
     margin-bottom: 1rem;
+}
+  
+.gallery .pagination {
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.gallery .pagination .page-link {
+	background-color: #1a1a1a;
+	color: #FFF;
+	border-color: var(--bs-dark);
+    cursor: pointer;
+    font-size: .9rem;
+}
+
+.gallery .pagination .page-item:first-child .page-link {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.gallery .pagination .page-item:last-child .page-link {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.gallery .pagination .active > .page-link, .gallery .pagination .page-link.active {
+    background-color: var(--bs-primary);
+}
+
+.gallery .pagination .page-link:disabled,
+.gallery .pagination .page-link.disabled {
+    background-color: var(--bs-secondary);
+    pointer-events: none;
+    cursor: not-allowed !important;
+}
+
+@media (min-width: 576px) {
+
 }
 
 @media (min-width: 768px) {
+    .gallery .search-container {
+        margin-bottom: 2rem;
+    }
     .gallery .images {
-        grid-template-columns: repeat(3, calc(33.33% - .375rem));
+        grid-template-columns: repeat(3, calc(33.33% - .5rem));
     }
 }
 
 @media (min-width: 1200px) {
     .gallery .images {
-        grid-template-columns: repeat(4, calc(25% - .375rem));
+        grid-template-columns: repeat(4, calc(25% - .55rem));
     }
 }
-  

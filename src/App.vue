@@ -3,31 +3,35 @@ import { onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 import SearchForm from './components/SearchForm.vue';
 import ImageList from './components/ImageList.vue';
+import Pagination from './components/Pagination.vue'
 
-const totalImages = ref(0);
-const images      = ref([]);
-const searchTerm  = ref("");
-const isLoading   = ref(false);
+const totalImages   = ref(0);
+const images        = ref([]);
+const searchTerm    = ref("");
+const isLoading     = ref(false);
 
-const API_URL = "https://pixabay.com/api/";
-const API_KEY = "24867302-6a5bcc62ddb787bd1b750a716";
+const pages         = ref(10);
+const currentPage   = ref(1);
+const itemsPerPage  = 40;
 
-const getImagesFromPixabayAPI = (search = "") => {
-  images.value.length = 0;
-  isLoading.value     = true;
+const API_URL       = "https://pixabay.com/api/";
+const API_KEY       = "24867302-6a5bcc62ddb787bd1b750a716";
+
+const getImagesFromPixabayAPI = () => {
+  document.getElementsByTagName('html')[0].scrollTo({ top: 0, behavior: "smooth" });
+
+  isLoading.value = true;
 
   axios
     .get(API_URL, {
-      params: { 
-        key: API_KEY, 
-        q: search.toLowerCase() 
-      }
+      params: { key: API_KEY, q: searchTerm.value.toLowerCase(), page: currentPage.value, per_page: itemsPerPage }
     })
     .then(({ data }) => {
-      const { total, hits } = data;
+      // console.log(data)
 
-      totalImages.value = total; 
-      images.value      = hits;
+      totalImages.value = data.total;
+      images.value      = data.hits;
+      pages.value       = Math.ceil(data.totalHits / itemsPerPage);
     })
     .catch(error => {
       console.log(error);
@@ -36,12 +40,18 @@ const getImagesFromPixabayAPI = (search = "") => {
       isLoading.value = false;
     });
 }
-const getSearchTerm = (text) => {
-  searchTerm.value = text;
+const getSearchTerm = (term) => {
+  searchTerm.value = term;
+}
+const getPage = (number) => {
+  currentPage.value = number;
 }
 
-watch(searchTerm, (newSearchTerm, oldSearchTerm) => {  
-  getImagesFromPixabayAPI(newSearchTerm);
+watch(searchTerm, () => {  
+  getImagesFromPixabayAPI();
+});
+watch(currentPage, () => {  
+  getImagesFromPixabayAPI();
 });
 
 onMounted(() => {
@@ -51,20 +61,15 @@ onMounted(() => {
 
 <template>
   <div class="gallery container my-4">
-    <h2 class="title">
-      Gallery App
-    </h2>
+    <h3 class="title">Gallery App</h3>
 
     <SearchForm @search="getSearchTerm" />
 
-    <p class="text-center mb-0" v-if="isLoading">
-      <i class="fa fa-spinner fa-spin me-1"></i> loading, wait a moment please...
-    </p>
-
-    <p class="text-center mb-0" v-if="!isLoading && totalImages > 0">
-      ({{ totalImages }}) results found
-    </p>
+    <p class="text-center mb-0" v-if="isLoading"><i class="fa fa-spinner fa-spin me-1"></i> loading, wait a moment please...</p>
+    <p class="text-center mb-0" v-else-if="totalImages === 0">sorry, no results found</p>
 
     <ImageList :images="images" />
+
+    <Pagination :pages="pages" :currentPage="currentPage" @page="getPage" v-if="totalImages > itemsPerPage" />    
   </div>
 </template>

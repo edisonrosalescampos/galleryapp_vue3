@@ -8,9 +8,7 @@ const props = defineProps({
     image: Object
 });
 
-setTimeout(() => {
-    imageURL.value = props.image.webformatURL
-}, 300);
+setTimeout(() => imageURL.value = props.image.webformatURL, 300);
 </script>
 
 <template>
