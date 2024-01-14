@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, onMounted } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import axios from 'axios';
 import SearchForm from './components/SearchForm.vue';
 import ImageList from './components/ImageList.vue';
