@@ -3,10 +3,10 @@ const props = defineProps({
     pages: Number,
     currentPage: Number
 });
-const emit  = defineEmits(['page']);
+const emit  = defineEmits(['update:currentPage']);
 
-const changePage = (numPage) => {
-    emit('page', numPage);
+const changePage = (pageNumber) => {
+    emit('update:currentPage', pageNumber);
 }
 </script>
 

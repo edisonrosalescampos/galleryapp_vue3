@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import axios from 'axios';
 import SearchForm from './components/SearchForm.vue';
 import ImageList from './components/ImageList.vue';
@@ -40,12 +40,6 @@ const getImagesFromPixabayAPI = () => {
       isLoading.value = false;
     });
 }
-const getSearchTerm = (term) => {
-  searchTerm.value = term;
-}
-const getPage = (number) => {
-  currentPage.value = number;
-}
 
 watch(searchTerm, () => {  
   getImagesFromPixabayAPI();
@@ -63,13 +57,13 @@ onMounted(() => {
   <div class="gallery container my-4">
     <h3 class="title">Gallery App</h3>
 
-    <SearchForm @search="getSearchTerm" />
+    <SearchForm v-model:searchTerm="searchTerm" />
 
     <p class="text-center mb-0" v-if="isLoading"><i class="fa fa-spinner fa-spin me-1"></i> loading, wait a moment please...</p>
     <p class="text-center mb-0" v-else-if="totalImages === 0">sorry, no results found</p>
 
     <ImageList :images="images" />
 
-    <Pagination :pages="pages" :currentPage="currentPage" @page="getPage" v-if="totalImages > itemsPerPage" />    
+    <Pagination :pages="pages" v-model:currentPage="currentPage" v-if="totalImages > itemsPerPage" />    
   </div>
 </template>

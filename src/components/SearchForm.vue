@@ -1,14 +1,14 @@
 <script setup>
 import { ref } from 'vue';
 
-const emit = defineEmits(['search']);
+const emit = defineEmits(['update:searchTerm']);
 
 const txtSearchTerm = ref("");
 
 const submitForm = () => {
   if (txtSearchTerm.value.trim() !== "") 
   {
-    emit('search', txtSearchTerm.value);
+    emit('update:searchTerm', txtSearchTerm.value);
   }
   else
   {
