@@ -6,16 +6,7 @@ const emit = defineEmits(['update:searchTerm']);
 const txtSearchTerm = ref("");
 
 const submitForm = () => {
-  if (txtSearchTerm.value.trim() !== "") 
-  {
-    emit('update:searchTerm', txtSearchTerm.value);
-  }
-  else
-  {
-    alert("Search box cannot be blank!")
-  }
-
-  txtSearchTerm.value = ""
+  emit('update:searchTerm', txtSearchTerm.value);
 }
 </script>
 
