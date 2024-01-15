@@ -27,7 +27,7 @@ const getImagesFromPixabayAPI = () => {
     .then(({ data: { total, totalHits, hits } }) => {
       totalImages.value = total;
       images.value      = hits;
-      pages.value       = Math.ceil(totalHits / itemsPerPage);
+      pages.value       = totalHits >= 400 ? 10 : Math.ceil(totalHits / itemsPerPage);
     })
     .catch(error => {
       console.log(error);
